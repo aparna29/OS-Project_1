@@ -9,7 +9,7 @@ int ousterhout[10000][33]={0};
 */
 struct job
 {
-	int n, burst_t,waiting_t,id,iscomp;
+	int n, burst_t,waiting_t,id,iscomp,arrival_t;
 }obj[10000],temp;
 main()
 {
@@ -29,8 +29,8 @@ main()
 		// Unique id is assigned to each process.
 		obj[i].n = rand()%p+1;
 		// n is number of tasks in a job.
-		obj[i].burst_t = rand()%100+10;
-		// Random generation of burst times.
+		obj[i].arrival_t=random()%100+0; // Gangs may arrive at time 0
+		obj[i].burst_t = random()%100+10;  // Lower bounds burst times of gangs to 10
 		obj[i].iscomp=0;
 		// iscomp=0 indicates the job has not been executed yet.
 	}
@@ -53,10 +53,10 @@ main()
 		}
 	}
 	printf("\n After sorting in descending order by number of tasks (Gang size) : \n");
-	printf("\nId\tNo. of tasks\tBurst Time");
+	printf("\nId\tNo. of tasks\tBurst Time\tArrival Time");
 	for(l=0;l<no_of_jobs;l++)
 	{
-        printf("\n%d\t\t%d\t\t%d\n",obj[l].id,obj[l].n,obj[l].burst_t);
+        printf("\n%d\t\t%d\t\t%d\t\t%d\n",obj[l].id,obj[l].n,obj[l].burst_t,obj[l].arrival_t);
 	}
 	i=0;
 	while(completed<no_of_jobs)
@@ -73,8 +73,9 @@ main()
 		// Checking which jobs can be assigned to the processor at that particular time slice.
 		while(i<no_of_jobs&&cnt!=0)
 		{
-			// Checking if the job has not been executed and if it requires less or equal processor than those available.			
-			if(obj[i].iscomp==0&&cnt>=obj[i].n)
+			// Checking if the job has not been executed and if it requires less or equal processor than those available.
+			// and the job has arrived already.			
+			if(obj[i].iscomp==0&&cnt>=obj[i].n&&obj[i].arrival_t<=tim)
 			{
 				j=1;
 				// The variable start finds the first available processor.
