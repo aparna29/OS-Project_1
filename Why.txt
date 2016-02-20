@@ -1,0 +1,6 @@
+Why is Gang Scheduling used?
+
+Gang scheduling is a scheduling algorithm for parallel systems that schedules related threads or processes to run simultaneously on different processors. Usually these will be threads all belonging to the same process, but they may also be from different processes. It requires all threads of the same process to run concurrently.
+
+Gang scheduling is used so that if two or more threads or processes communicate with each other, they will all be ready to communicate at the same time. If they were not gang-scheduled, then one could wait to send or receive a message to another while it is sleeping, and vice versa. When processors are over-subscribed and gang scheduling is not used within a group of processes or threads which communicate with each other, it can lead to situations where each communication event suffers the overhead of a context switch.
+Also, gang scheduling provides an effective way of resource sharing as all the related tasks of a job are executed simultaneously.
